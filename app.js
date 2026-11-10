@@ -19,7 +19,7 @@ async function load(){
   const data=await response.json();applyLoadedConfig(data.config,data.version);return;
  }catch(apiError){
   try{
-   const response=await fetch('/config.md?ts='+Date.now(),{cache:'no-store'});
+   const response=await fetch('./config.md?ts='+Date.now(),{cache:'no-store'});
    if(!response.ok)throw Error('config.md 返回 '+response.status);
    const content=await response.text();let hash=2166136261;
    for(let i=0;i<content.length;i++)hash=Math.imul(hash^content.charCodeAt(i),16777619);
