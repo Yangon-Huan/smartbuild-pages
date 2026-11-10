@@ -1,0 +1,96 @@
+.bim-page .bim-crumb-arrow{color:#bed7dd;margin:0 3px}
+.bim-page .detail-sidebar{padding:8px 10px 8px 12px}
+.bim-sidebar-list{display:grid;align-content:start;gap:9px;height:100%;overflow-y:auto}
+.bim-status-card{min-height:27vh;background:#fff;border:2px solid transparent;border-radius:5px;overflow:hidden;display:flex;flex-direction:column}
+.bim-status-card.selected{border-color:#27c4e9}
+.bim-status-accent{height:49px;flex:none;background:#fff}
+.bim-status-card.selected .bim-status-accent{background:#25c1e9}
+.bim-status-content{display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:10px;color:#647b82;font-size:12px}
+.bim-status-content b{background:#50c83d;color:#fff;border-radius:4px;padding:3px 8px;font-size:12px}
+.bim-status-content small{color:#687d83;font-size:12px}
+.bim-status-content strong{font-weight:500;color:#14a9c4;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bim-main{min-width:0;min-height:0;padding:8px 8px 6px 12px;display:grid;grid-template-rows:43px 42px minmax(0,1fr) 31px;gap:5px}
+.bim-context{min-width:0;display:grid;grid-template-columns:1.1fr .8fr 1.1fr 1fr;gap:5px}
+.bim-context>div{background:#586265;box-shadow:inset 3px 0 #23c2e8;color:#fff;padding:12px 9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.bim-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#334d54;font-size:14px}
+.bim-toolbar span{font-size:12px;color:#26a4ba;background:#e4f4f8;border:1px solid #c7e4e9;border-radius:3px;padding:5px 9px}
+.bim-workspace{min-width:0;min-height:0;display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,.8fr);gap:8px}
+.bim-preview,.bim-info{border:1px solid #bde3ee;background:#fff;min-width:0;min-height:0;overflow:hidden}
+.bim-preview{position:relative;display:flex;align-items:center;justify-content:center;background:#edf5f6}
+.bim-preview img{display:block;width:100%;height:100%;object-fit:contain}
+.bim-preview>span{position:absolute;top:10px;left:10px;background:#193f48d9;color:#fff;padding:5px 8px;border-radius:3px;font-size:11px}
+.bim-info{display:flex;flex-direction:column;overflow:auto}
+.bim-info h2,.bim-info h3{margin:0;background:#405054;color:#fff;font-size:13px;font-weight:500;padding:10px}
+.bim-info h3{background:#18b9d2}
+.bim-info dl{margin:0}.bim-info dl>div{display:grid;grid-template-columns:110px minmax(0,1fr);border-bottom:1px solid #e3eef0;font-size:12px}.bim-info dt,.bim-info dd{margin:0;padding:12px 10px;overflow-wrap:anywhere}.bim-info dt{background:#eef7f9;color:#4b6870}.bim-info dd{color:#375c65}
+.bim-table-wrap{overflow:auto;flex:1}.bim-info table{width:100%;border-collapse:collapse;font-size:11px}.bim-info th{background:#20bdd7;color:#fff;white-space:nowrap;font-weight:500}.bim-info td{color:#496b73}.bim-info th,.bim-info td{padding:10px 7px;border:1px solid #e1edf0}
+.bim-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}.bim-bottom span{font-size:11px;color:#7298a1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bim-bottom button{flex:none;border:0;border-radius:4px;background:#22bde4;color:#fff;padding:6px 12px;cursor:pointer;font:12px "Microsoft YaHei",Arial,sans-serif}
+.bim-bottom button:hover{background:#0aa9d1}
+@media(max-width:850px){.bim-page{height:auto;min-height:100vh;overflow:auto}.bim-page .detail-body{height:auto;min-height:calc(100vh - 58px);grid-template-columns:155px minmax(0,1fr)}.bim-status-card{min-height:190px}.bim-main{min-height:calc(100vh - 58px)}.bim-workspace{grid-template-columns:1fr;grid-template-rows:minmax(280px,1fr) auto}.bim-info{max-height:360px}.bim-context{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:38px}.bim-main{grid-template-rows:81px 42px minmax(0,1fr) 31px}}
+@media(max-width:540px){.bim-page .detail-body{display:block}.bim-page .detail-sidebar{height:auto}.bim-sidebar-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.bim-status-card{min-height:105px}.bim-status-accent{height:15px}.bim-status-content{gap:3px;padding:5px;font-size:10px}.bim-status-content small,.bim-status-content strong{font-size:10px}.bim-main{min-height:calc(100vh - 180px);padding:7px}.bim-workspace{grid-template-rows:minmax(220px,45vh) auto}.bim-bottom span{display:none}.bim-bottom{justify-content:flex-end}}
+
+/* Data analysis layout: tall status cards, deep preview, and full-height data rows. */
+.bim-sidebar-list{scrollbar-width:thin;scrollbar-color:#a4cbd3 #566366;padding-right:3px}
+.bim-status-card{min-height:31vh}
+.bim-status-card.selected .bim-status-accent::after{content:'▶';color:#fff;font-size:15px;position:relative;left:7px;top:15px}
+.bim-toolbar{border-bottom:1px solid #d2e9ee}
+.bim-preview{display:grid;grid-template-rows:44px minmax(0,1fr) 38px;align-items:stretch;justify-content:stretch;background:#061d2a}
+.bim-preview-bar{display:flex;align-items:center;justify-content:space-between;background:#23bce2;color:#fff;padding:0 13px;font-size:14px}
+.bim-preview-bar strong{font-weight:600}
+.bim-preview-bar span{font:600 12px Arial,sans-serif;letter-spacing:.1em;border:1px solid #ffffff88;border-radius:3px;padding:3px 6px}
+.bim-preview-canvas{position:relative;min-height:0;overflow:hidden;background:linear-gradient(#0f4a6b,#041722)}
+.bim-preview-canvas img{display:block;width:100%;height:100%;object-fit:cover}
+.bim-preview-tag{position:absolute;top:12px;left:12px;background:#123e51df;border:1px solid #66b8c9;color:#fff;border-radius:3px;padding:5px 8px;font-size:11px}
+.bim-preview-footer{display:flex;align-items:center;background:#f8fbfc;color:#7b9aa3;border-top:1px solid #c6e2ea;padding:0 12px;font-size:12px}
+.bim-info{overflow:hidden}
+.bim-info h2{flex:none;min-height:44px;display:flex;align-items:center;background:#405054}
+.bim-info h3{flex:none;min-height:39px;display:flex;align-items:center}
+.bim-facts{min-height:240px;flex:1;display:grid;grid-template-rows:repeat(4,minmax(0,1fr))}
+.bim-facts>div{display:grid;grid-template-columns:38% minmax(0,1fr);min-height:0}
+.bim-facts b,.bim-facts span{display:flex;align-items:center;padding:10px 12px;border-bottom:1px solid #dce9ed;font-size:13px;font-weight:500;overflow-wrap:anywhere}
+.bim-facts b{justify-content:center;text-align:center;background:#19b9d5;color:#fff;border-right:1px solid #ffffff55}
+.bim-facts span{background:#fff;color:#4a6b73}
+.bim-table-wrap{flex:none;min-height:210px;max-height:35%;overflow:auto}
+.bim-info th,.bim-info td{text-align:center}
+@media(max-width:850px){.bim-status-card{min-height:190px}.bim-info{max-height:none;min-height:520px}.bim-facts{min-height:260px}.bim-table-wrap{min-height:170px}}
+@media(max-width:540px){.bim-status-card{min-height:105px}.bim-preview{grid-template-rows:37px minmax(0,1fr) 32px}.bim-info{min-height:500px}}
+
+/* Match the three engineering status cards on the data analysis page. */
+.bim-page .detail-sidebar{padding:8px 5px 7px 12px}
+.bim-page .detail-card-list{scrollbar-width:none}
+.bim-page .detail-card{min-height:31vh}
+.bim-edit-overlay{position:fixed;inset:0;z-index:40;background:#102e3b8c;display:flex;align-items:center;justify-content:center}
+.bim-edit-dialog{width:min(380px,calc(100vw - 30px));background:#fff;color:#314d55;border-radius:7px;box-shadow:0 16px 48px #0a263677;padding:20px;display:grid;gap:14px}
+.bim-edit-dialog h2{font-size:18px;margin:0}.bim-edit-dialog label{font-size:13px;display:grid;gap:6px}.bim-edit-dialog input{width:100%;border:1px solid #bdd5dd;border-radius:4px;padding:9px;font:13px "Microsoft YaHei",Arial,sans-serif}
+.bim-edit-dialog>div{display:flex;justify-content:flex-end;gap:8px}.bim-edit-dialog button{border:1px solid #bdd5dd;border-radius:4px;background:#fff;color:#36606d;padding:7px 16px;cursor:pointer}.bim-edit-dialog button[type=submit]{background:#23bce2;border-color:#23bce2;color:#fff}
+@media(max-width:850px){.bim-page .detail-card{min-height:220px}}
+@media(max-width:540px){.bim-page .detail-sidebar{height:270px}.bim-page .detail-card{min-height:220px}}
+
+/* Interactive IFC model and entity inspection. */
+.bim-toolbar-actions{display:flex;align-items:center;gap:8px}
+.bim-toolbar .bim-build-button{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;width:112px;height:34px;flex:none;border:0;border-radius:4px;background:#23bce2;color:#fff;padding:0 6px;white-space:nowrap;font:600 13px "Microsoft YaHei",Arial,sans-serif;cursor:pointer}
+.bim-toolbar .bim-build-button:hover{background:#0da9d2}.bim-toolbar .bim-build-button:disabled{opacity:.65;cursor:wait}
+.bim-preview{grid-template-rows:44px minmax(0,1fr);background:#092331}
+.bim-preview-bar{justify-content:flex-start}.bim-preview-canvas{background:#092331;display:flex;align-items:center;justify-content:center}
+.bim-preview-canvas canvas{width:100%;height:100%;display:block;touch-action:none}
+.bim-model-message{color:#a8c9d2;font-size:14px;text-align:center;padding:18px}.bim-model-message.error{color:#ffc39e}
+.bim-info{display:grid;grid-template-rows:44px minmax(160px,1fr) minmax(180px,.85fr);overflow:hidden}
+.bim-info h2{margin:0;justify-content:space-between}.bim-info h2 small{font-size:11px;color:#bde7eb;font-weight:400}
+.bim-tree{min-height:0;overflow:auto;background:#fff;padding:4px 0}
+.bim-tree-empty,.bim-empty-parameter{color:#91a8ae;font-size:13px;padding:24px;text-align:center}
+.bim-tree-group{border-bottom:1px solid #e3eef0}.bim-tree-group summary{list-style:none;cursor:pointer;padding:9px 12px;background:#eef8fa;color:#365963;font-size:13px;font-weight:600}.bim-tree-group summary::before{content:'▸';display:inline-block;margin-right:8px;transition:transform .15s}.bim-tree-group[open] summary::before{transform:rotate(90deg)}.bim-tree-group summary small{float:right;font-size:11px;color:#6b929d}
+.bim-tree-item{display:block;width:100%;border:0;border-left:3px solid transparent;background:#fff;color:#456973;text-align:left;padding:7px 12px 7px 26px;cursor:pointer;font:12px "Microsoft YaHei",Arial,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bim-tree-item:hover{background:#edf8fb}.bim-tree-item.selected{background:#d4f1f8;border-left-color:#15b8d8;color:#075a6b;font-weight:600}
+.bim-parameters{min-height:0;overflow:auto;border-top:3px solid #1bbbd7;background:#fff}.bim-parameters h3{margin:0;position:sticky;top:0;z-index:1;background:#405054;color:#fff;font-size:13px;padding:10px 12px}.bim-property-rows>div{display:grid;grid-template-columns:40% minmax(0,1fr);border-bottom:1px solid #e3eef0;font-size:12px}.bim-property-rows b,.bim-property-rows span{padding:9px 10px;overflow-wrap:anywhere}.bim-property-rows b{background:#eef8fa;color:#4d6b74;font-weight:500}.bim-property-rows span{color:#355962}
+.bim-bottom{justify-content:flex-end}
+@media(max-width:850px){.bim-info{min-height:520px;grid-template-rows:44px minmax(180px,1fr) minmax(180px,.9fr)}}
+
+/* Five module shortcuts, aligned with the field collection toolbar. */
+.bim-toolbar{display:grid;grid-template-columns:clamp(58px,5vw,100px) minmax(0,1fr) auto;align-items:center;gap:10px}
+.bim-toolbar>b{white-space:nowrap}
+.bim-quick-nav{display:flex;align-items:center;justify-content:space-around;gap:8px;width:100%;max-width:940px;min-width:0;margin:0}
+.bim-quick-nav button{box-sizing:border-box;width:84px;height:31px;min-width:84px;flex:none;padding:0 2px;border:0;border-radius:4px;background:#25c0ed;color:#fff;font:13px "Microsoft YaHei";white-space:nowrap;cursor:pointer;transition:background .16s}
+.bim-quick-nav button:hover,.bim-quick-nav button:focus-visible{background:#12add8;outline:none}
+.bim-quick-nav button.active{box-shadow:inset 0 -3px 0 #0b8299}
+@media(max-width:1100px){.bim-toolbar{gap:6px}.bim-quick-nav{gap:4px}}
+@media(max-width:900px){.bim-main{grid-template-rows:43px 78px minmax(0,1fr) 31px}.bim-toolbar{grid-template-columns:1fr auto;align-content:center}.bim-quick-nav{grid-column:1/-1;grid-row:2;justify-content:space-between;overflow-x:auto;padding:2px 0}.bim-toolbar-actions{grid-column:2;grid-row:1}}
+@media(max-width:850px){.bim-main{grid-template-rows:81px 78px minmax(0,1fr) 31px}}

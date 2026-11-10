@@ -1,0 +1,103 @@
+.image-analysis-page{height:100vh;min-height:620px;overflow:hidden;background:repeating-linear-gradient(113deg,#eaf6f8 0,#eaf6f8 4px,#e4f2f5 5px,#eaf6f8 10px);color:#263d43;font:14px "Microsoft YaHei",Arial,sans-serif}
+.image-analysis-header{height:58px;background:#666;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 13px 0 18px}
+.image-analysis-header>div{display:flex;align-items:center;gap:9px;font-size:18px;font-weight:600}
+.image-analysis-header>div>span:first-child{font-size:23px}.image-analysis-header .image-analysis-separator{font-size:24px;font-weight:400;color:#dce6e8;margin:0 4px}.image-analysis-header strong{font-weight:600}
+.image-analysis-header>button{height:29px;width:29px;border:1px solid #d6d6d6;background:transparent;color:#fff;font:25px Arial;line-height:20px;cursor:pointer}
+.image-analysis-header>button:hover{background:#4e5557}
+.image-analysis-body{display:grid;grid-template-columns:clamp(184px,12.4vw,270px) minmax(0,1fr);height:calc(100vh - 58px);min-height:0}
+.image-analysis-sidebar{min-width:0;height:100%;padding:8px 5px 7px 12px;background:#62696b;border-right:2px solid #add9e2;overflow:hidden}
+.image-analysis-sidebar-shell{display:grid;grid-template-columns:minmax(0,1fr) 19px;gap:3px;height:100%;min-height:0;overflow:hidden}
+.image-analysis-card-list{display:grid;align-content:start;gap:8px;min-height:0;height:100%;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;padding:0 2px 5px 0}
+.image-analysis-card-list::-webkit-scrollbar{width:0;height:0}
+.image-analysis-card{background:#fff;border:2px solid transparent;border-radius:5px;min-height:31vh;display:flex;flex-direction:column;overflow:hidden;cursor:pointer}
+.image-analysis-card.selected{border-color:#2bc4ec}
+.image-analysis-card-accent{height:49px;flex:none;background:#fff}
+.image-analysis-card.selected .image-analysis-card-accent{background:#25c1ed;position:relative}
+.image-analysis-card.selected .image-analysis-card-accent::after{content:"▶";position:absolute;left:3px;top:14px;color:#fff;font-size:15px}
+.image-analysis-card-inner{display:flex;flex-direction:column;gap:6px;flex:1;padding:8px 7px;color:#455356;font-size:12px;line-height:1.35}
+.image-analysis-badge{align-self:flex-start;color:#fff;background:#f1a92a;border-radius:4px;padding:3px 7px;font-size:11px;font-weight:400}
+.image-analysis-badge.done{background:#56ca30}.image-analysis-badge.working{background:#26bce5}
+.image-analysis-card-inner>div span{color:#67858d}.image-analysis-card-inner>div .image-analysis-location{color:#21afd0}
+.image-analysis-card-inner button{margin-top:auto;border:1px solid #d6e0e2;background:#fff;border-radius:3px;padding:4px;color:#45616a;font:12px "Microsoft YaHei",Arial,sans-serif;cursor:pointer}
+.image-analysis-card-inner button:hover{background:#eaf9fc}
+.image-analysis-scrollbar{min-height:0;display:flex;flex-direction:column;background:#566366;user-select:none}
+.image-analysis-scrollbar>button{height:22px;flex:none;border:0;background:#566366;color:#b4c9cd;font-size:10px;cursor:pointer}
+.image-analysis-scrollbar>button:hover{background:#40717a;color:#fff}
+.image-analysis-scroll-rail{position:relative;flex:1;min-height:0;cursor:pointer}
+.image-analysis-scroll-thumb{position:absolute;top:0;left:2px;right:2px;border:1px solid #bedce1;border-radius:4px;background:#88b0b9;cursor:grab;touch-action:none}
+.image-analysis-scroll-thumb:hover,.image-analysis-scroll-thumb:focus{background:#b6d4da;outline:1px solid #d7f3f6}
+.image-analysis-scroll-thumb:active{cursor:grabbing}
+.image-analysis-main{min-width:0;min-height:0;padding:8px 7px 6px 12px;display:grid;grid-template-rows:39px 42px minmax(0,1fr) 32px;gap:5px}
+.image-analysis-context{min-width:0;display:grid;grid-template-columns:1.05fr .8fr 1.1fr 1fr;gap:5px;align-items:stretch}
+.image-analysis-context>div{background:#586265;color:#fff;box-shadow:inset 3px 0 #22c2e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:10px 8px;font-size:12px}
+.image-analysis-context b{font-weight:400}
+
+.image-analysis-workspace{min-width:0;min-height:0;display:grid;grid-template-columns:minmax(0,1.8fr) minmax(240px,.9fr);gap:6px}
+.image-analysis-photo,.image-analysis-dictionary{min-width:0;min-height:0;display:grid;grid-template-rows:33px minmax(0,1fr);border:2px solid #2bbde7;background:#fff}
+.image-analysis-photo>header,.image-analysis-dictionary>header{background:#475355;color:#fff;padding:6px 11px;font-size:13px}
+.image-analysis-photo-body{min-height:0;display:grid;place-items:center;overflow:hidden;background:#515b5f}
+.image-analysis-photo-body img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+.image-analysis-dictionary{overflow:hidden}
+.image-analysis-dictionary table{width:100%;height:100%;min-height:0;border-collapse:collapse;table-layout:fixed;background:#fff;color:#526468;font-size:13px}
+.image-analysis-dictionary thead{height:42px;background:#17bee6;color:#fff}
+.image-analysis-dictionary th{font-weight:500;border-right:1px solid #70d7e9;padding:5px 3px}
+.image-analysis-dictionary th:last-child{border-right:0}
+.image-analysis-dictionary td{text-align:center;border:1px solid #e3e9eb;padding:8px 4px}
+.image-analysis-dictionary tbody tr{height:48%}
+.image-analysis-bottom{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.image-analysis-bottom span{margin-right:auto;color:#6b9fac;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.image-analysis-bottom button{height:27px;width:31px;background:#5d7479;border:1px solid #95cbd7;border-radius:3px;color:#fff;cursor:pointer;font:23px Arial;line-height:18px}
+.image-analysis-bottom button:hover{background:#3c666e}
+@media(max-width:900px){.image-analysis-body{grid-template-columns:155px minmax(0,1fr)}.image-analysis-sidebar{padding-left:5px}.image-analysis-workspace{grid-template-columns:minmax(0,1.45fr) minmax(190px,.85fr)}.image-analysis-context>div{font-size:10px;padding:9px 5px}}
+@media(max-width:700px){.image-analysis-context{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:34px}.image-analysis-main{grid-template-rows:71px 78px minmax(0,1fr) 32px}.image-analysis-workspace{grid-template-columns:minmax(0,1fr) minmax(170px,.85fr)}.image-analysis-dictionary table{font-size:11px}}
+
+/* Keep this screen within the viewport; only the left work-area list scrolls. */
+html.image-analysis-locked,body.image-analysis-locked{height:100%!important;min-height:0!important;overflow:hidden!important;overscroll-behavior:none}
+body.image-analysis-locked #app{height:100%!important;min-height:0!important;overflow:hidden!important}
+body.image-analysis-locked .image-analysis-page{height:100%!important;min-height:0!important;overflow:hidden}
+body.image-analysis-locked .image-analysis-body{height:calc(100% - 58px);min-height:0;overflow:hidden}
+body.image-analysis-locked .image-analysis-card-list{overscroll-behavior:contain}
+
+/* Reference work-area card content: status, interface work, mileage, location. */
+.image-analysis-card-inner{gap:0;padding:8px 7px 9px;font-size:13px;line-height:1.4}
+.image-analysis-card-status,.image-analysis-card-field{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.image-analysis-card-status{margin-bottom:7px}
+.image-analysis-card-field{margin-bottom:7px}
+.image-analysis-card-field>span{color:#455356}
+.image-analysis-card-field>strong{font-weight:400;color:#67858d}
+.image-analysis-card-field>.image-analysis-engineering,.image-analysis-card-field>.image-analysis-location{color:#21afd0}
+.image-analysis-card-location{margin-top:auto;margin-bottom:8px}
+.image-analysis-card-inner button{width:100%;margin-top:0}
+
+/* Keep the portrait inspection image centered in the dark viewer. */
+.image-analysis-photo-body{position:relative;display:flex;align-items:center;justify-content:center;background:#4d575b;padding:0 8px}
+.image-analysis-photo-body img{width:auto;height:100%;max-width:100%;max-height:100%;object-fit:contain;flex:none}
+.image-analysis-legend{position:absolute;top:8px;right:8px;z-index:1;display:grid;gap:4px;background:rgba(47,62,64,.92);color:#f2f7f8;padding:7px 9px;font-size:12px;line-height:1.2}
+.image-analysis-legend>div{display:flex;align-items:center;gap:9px}
+.image-analysis-legend i{display:block;width:28px;height:11px;flex:none}
+.image-analysis-legend i.rust{background:#f10b15}
+.image-analysis-legend i.spall{background:#078bf0}
+
+/* A CSS image avoids browser image-assistant overlays on the inspection photo. */
+.image-analysis-photo-body .image-analysis-picture{display:block;flex:none;height:100%;max-width:100%;aspect-ratio:3/4;background-position:center;background-repeat:no-repeat;background-size:contain}
+.image-analysis-photo-body.detected .image-analysis-picture{aspect-ratio:3/4;border:0;box-sizing:border-box}
+
+.image-analysis-photo-body .image-analysis-picture{position:relative;overflow:hidden}
+.image-analysis-result-layer{position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat;opacity:0;transition:opacity 650ms ease-in-out;pointer-events:none}
+.image-analysis-photo-body.detected .image-analysis-result-layer{opacity:1}
+.image-analysis-dictionary tbody,.image-analysis-legend{transition:opacity 650ms ease-in-out}
+
+
+/* Two-row header matching the data analysis detail page. */
+.image-analysis-toolbar{min-width:0;display:grid;grid-template-columns:clamp(58px,5vw,100px) minmax(0,1fr) auto;align-items:center;gap:10px}
+.image-analysis-toolbar>b{font-size:13px;white-space:nowrap}
+.image-analysis-toolbar>button{box-sizing:border-box;width:84px;height:31px;border:0;border-radius:4px;background:#23bfe9;color:#fff;font:13px "Microsoft YaHei";white-space:nowrap;cursor:pointer}
+.image-analysis-toolbar>button:hover{background:#0ba8d1}
+.image-analysis-toolbar>button:disabled{opacity:.6;cursor:wait}
+.image-analysis-quick-nav{display:flex;align-items:center;justify-content:space-around;gap:8px;width:100%;max-width:940px;min-width:0;margin:0}
+.image-analysis-quick-nav button{box-sizing:border-box;width:84px;height:31px;min-width:84px;flex:none;padding:0 2px;border:0;border-radius:4px;background:#25c0ed;color:#fff;font:13px "Microsoft YaHei";white-space:nowrap;cursor:pointer;transition:background .16s}
+.image-analysis-quick-nav button:hover,.image-analysis-quick-nav button:focus-visible{background:#12add8;outline:none}
+.image-analysis-quick-nav button.active{box-shadow:inset 0 -3px 0 #0b8299}
+@media(max-width:900px){.image-analysis-toolbar{gap:6px}.image-analysis-quick-nav{gap:4px}}
+@media(max-width:800px){.image-analysis-main{grid-template-rows:39px 78px minmax(0,1fr) 32px}.image-analysis-toolbar{grid-template-columns:1fr auto;align-content:center}.image-analysis-quick-nav{grid-column:1/-1;grid-row:2;justify-content:space-between;overflow-x:auto;padding:2px 0}.image-analysis-toolbar>button{grid-column:2;grid-row:1}}
+@media(max-width:700px){.image-analysis-main{grid-template-rows:71px 78px minmax(0,1fr) 32px}}

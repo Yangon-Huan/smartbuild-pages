@@ -1,0 +1,28 @@
+.export-main{grid-template-rows:39px 42px minmax(0,1fr) 32px}
+.export-results{min-width:0;min-height:0;display:flex;flex-direction:column;background:#fff;border:1px solid #c5e0e8;overflow:hidden}
+.export-table-wrap{min-width:0;max-height:55%;overflow:auto;scrollbar-color:#a8c9d3 #edf7f9}
+.export-table{width:100%;min-width:920px;border-collapse:collapse;table-layout:fixed;text-align:center;font:13px/1.4 "Microsoft YaHei",Arial,sans-serif;color:#576b70}
+.export-table th,.export-table td{border:1px solid #e1e9ec;padding:12px 8px;overflow-wrap:anywhere}
+.export-table thead th{background:#0bbce8;color:#fff;font-weight:600;min-height:54px}
+.export-table thead th:first-child{width:90px}
+.export-table tbody th{background:#fff;color:#465c62;text-align:center;font:500 15px/1.4 "Microsoft YaHei",Arial,sans-serif}
+.export-table tbody tr{height:55px}
+.export-blank{flex:1;min-height:0;display:grid;place-items:center;color:#c9ced0;font-size:14px}
+@media(max-width:1100px){.export-main{grid-template-rows:39px 58px minmax(0,1fr) 32px}}
+@media(max-width:700px){.export-main{grid-template-rows:71px 83px minmax(0,1fr) 32px}}
+
+.one-click-page .export-table{min-width:1080px}
+.one-click-page .export-table thead th:last-child{width:150px}
+.one-click-page .export-table tbody td:last-child{font-weight:600;color:#3b6865}
+
+.one-click-page .export-table thead th:first-child{width:178px}
+.one-click-page .export-table tbody th small{display:block;font:12px/1.3 "Microsoft YaHei",Arial,sans-serif;color:#879da2;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.one-click-page [data-export-all].one-click-loading{background:#28a745;border-color:#28a745;color:#fff;opacity:1;cursor:wait;display:inline-flex;align-items:center;gap:6px}
+.one-click-spinner{width:13px;height:13px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:one-click-spin .7s linear infinite}
+@keyframes one-click-spin{to{transform:rotate(360deg)}}
+
+.one-click-page .export-results{min-height:0;overflow:hidden}
+.one-click-page .export-table-wrap{flex:1 1 auto;height:100%;max-height:none;overflow-x:auto;overflow-y:scroll;scrollbar-gutter:stable;scrollbar-color:#87b1bc #e9f2f4;scrollbar-width:auto}
+.one-click-page .export-table thead th{position:sticky;top:0;z-index:1}
+.one-click-page .export-table thead th:first-child{width:90px}
+.one-click-page .export-table tbody th small{display:none}
