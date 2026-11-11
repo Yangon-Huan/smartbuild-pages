@@ -39,7 +39,7 @@
 .detail-toolbar-right{display:flex;align-items:center;justify-content:flex-end;gap:6px;min-width:0}
 .detail-toolbar-right>span{white-space:nowrap;color:#65a8ba;background:#e4f4fa;border:1px solid #b7dce8;border-radius:3px;padding:5px 6px;font-size:11px}
 .detail-toolbar-right em{font-style:normal;color:#258bac}
-.detail-toolbar-right button{height:28px;padding:0 8px}
+.detail-toolbar-right button{box-sizing:border-box;width:auto;min-width:0;height:31px;padding:0 12px;font:13px "Microsoft YaHei",Arial,sans-serif}
 .detail-toolbar-right button:disabled{opacity:.55;cursor:wait}
 .detail-measurements{min-height:0;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(220px,32%,420px);grid-template-rows:minmax(0,1fr);overflow:hidden;background:#fff;border:1px solid #b8dbe4}
 .detail-measurement-head{grid-column:2;grid-row:1;min-width:0;min-height:0;display:grid;grid-template-columns:1fr;grid-template-rows:repeat(6,minmax(0,1fr));background:#06bce8;color:#fff;font-size:13px;font-weight:600;text-align:center}

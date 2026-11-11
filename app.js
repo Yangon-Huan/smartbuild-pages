@@ -14,7 +14,7 @@ function applyLoadedConfig(next,version){
 }
 async function load(){
  try{
-  const response=await fetch('/api/config?ts='+Date.now(),{cache:'no-store'});
+  const response=await fetch((window.API_BASE||'')+'/api/config?ts='+Date.now(),{cache:'no-store'});
   if(!response.ok)throw Error('配置接口返回 '+response.status);
   const data=await response.json();applyLoadedConfig(data.config,data.version);return;
  }catch(apiError){

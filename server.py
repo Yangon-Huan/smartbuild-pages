@@ -159,13 +159,32 @@ def analyze_export_folder(folder_name, file_names):
     return {'rows':entries,'summary':summary,'file_count':len(entries),'measured_count':len(entries)}
 
 class Handler(SimpleHTTPRequestHandler):
+    # 允许跨域访问本站接口的前端来源（GitHub Pages 静态站）
+    ALLOW_ORIGINS = {'https://yangon-huan.github.io'}
+    # 仅本机浏览器可直接调用 /api/shutdown
+    LOCAL_ORIGINS = {'http://127.0.0.1:8876', 'http://localhost:8876'}
     def log_message(self,fmt,*args): pass
+    def _origin_ok(self):
+        origin = self.headers.get('Origin')
+        return bool(origin) and (origin in self.ALLOW_ORIGINS or origin in self.LOCAL_ORIGINS)
+    def _send_cors(self):
+        if self._origin_ok():
+            self.send_header('Access-Control-Allow-Origin', self.headers.get('Origin'))
+            self.send_header('Vary', 'Origin')
     def end_headers(self):
+        self._send_cors()
         if self.command == 'GET':
             self.send_header('Cache-Control', 'no-store, max-age=0')
             self.send_header('Pragma', 'no-cache')
             self.send_header('Expires', '0')
         super().end_headers()
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.send_header('Access-Control-Max-Age', '600')
+        self.send_header('Content-Length', '0')
+        self.end_headers()
     def do_POST(self):
         if self.path == '/api/one-click-analysis':
             try:
@@ -197,6 +216,11 @@ class Handler(SimpleHTTPRequestHandler):
             return
         if self.path != '/api/shutdown':
             self.send_error(404)
+            return
+        # 只允许本机浏览器触发退出，避免公网访客一键关掉服务
+        origin = self.headers.get('Origin')
+        if origin and origin not in self.LOCAL_ORIGINS:
+            self.send_error(403, 'forbidden')
             return
         self.send_response(200)
         self.send_header('Content-Type', 'application/json; charset=utf-8')
