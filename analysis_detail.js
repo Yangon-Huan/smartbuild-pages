@@ -1,9 +1,9 @@
 let analysisDetailTaskId=0,analysisDetailActive=0,analysisDetailSource='',analysisDetailScrollTop=0;
-let analysisDetailRunning=false,analysisDetailNotice='',analysisDetailDoneAdded=0,analysisDetailPendingUsed=0;
+let analysisDetailNotice='',analysisDetailDoneAdded=0,analysisDetailPendingUsed=0;
 const analysisDetailStatuses=new Map(),analysisDetailEdits=new Map(),analysisDetailResults=new Set();
 let analysisDetailDraft=null,analysisDetailLoading=false,analysisDetailEmptyPreviewId=-1,analysisDetailHiddenPreviewId=-1,analysisDetailViewer=null;
 const analysisDetailClouds=new Map(),analysisDetailViews=new Map();
-let oneClickLoading=false,oneClickRows=null,oneClickSummary=null;
+
 
 function detailConfig(){return cfg.analysis_detail||{}}
 function detailQuickNav(){
@@ -13,11 +13,11 @@ function detailQuickNav(){
 
 function detailCards(){
  const d=detailConfig(),source=String(d.cards||'');
- if(source!==analysisDetailSource){analysisDetailSource=source;analysisDetailActive=0;analysisDetailScrollTop=0;analysisDetailRunning=false;analysisDetailNotice='';analysisDetailDoneAdded=0;analysisDetailPendingUsed=0;analysisDetailStatuses.clear();analysisDetailEdits.clear();analysisDetailResults.clear();analysisDetailDraft=null;analysisDetailLoading=false;analysisDetailEmptyPreviewId=-1;analysisDetailHiddenPreviewId=-1;analysisDetailClouds.clear();analysisDetailViews.clear();analysisDetailViewer?.destroy();analysisDetailViewer=null}
+ if(source!==analysisDetailSource){analysisDetailSource=source;analysisDetailActive=0;analysisDetailScrollTop=0;analysisDetailNotice='';analysisDetailDoneAdded=0;analysisDetailPendingUsed=0;analysisDetailStatuses.clear();analysisDetailEdits.clear();analysisDetailResults.clear();analysisDetailDraft=null;analysisDetailLoading=false;analysisDetailEmptyPreviewId=-1;analysisDetailHiddenPreviewId=-1;analysisDetailClouds.clear();analysisDetailViews.clear();analysisDetailViewer?.destroy();analysisDetailViewer=null}
  return obj(source,';').map(([location,mileage,status],id)=>({id,location:analysisDetailEdits.get(id)?.location??location??'',mileage:analysisDetailEdits.get(id)?.mileage??mileage??'',status:analysisDetailStatuses.get(id)||status||d.pending_status||''}));
 }
 
-function detailCardMarkup(card,d){return `<article class="detail-card ${card.id===analysisDetailActive?'selected':''}" data-detail-card="${card.id}"><div class="detail-card-accent"></div><div class="detail-card-inner"><div>${esc(d.status_label)}：</div><strong class="detail-badge ${card.status===d.done_status?'done':card.status===d.working_status?'working':'pending'}">${esc(card.status)}</strong><div>${esc(d.engineering_label)}：</div><span class="detail-card-link">${esc(d.engineering_value)}</span><div>${esc(d.mileage_label)}：<span>${esc(card.mileage||d.mileage_default)}</span></div><div class="detail-card-location">${esc(d.location_label)}：<span>${esc(card.location)}</span></div><button type="button" class="detail-edit" data-detail-edit="${card.id}">${esc(d.edit_button)}</button></div></article>`}
+function detailCardMarkup(card,d){return `<article class="detail-card work-card ${card.id===analysisDetailActive?'selected':''}" data-detail-card="${card.id}"><div class="detail-card-accent work-card-accent"></div><div class="detail-card-inner work-card-inner"><div class="work-card-status"><span class="work-card-label">${esc(d.status_label)}：</span><strong class="detail-badge work-card-badge ${card.status===d.done_status?'done':card.status===d.working_status?'working':'pending'}">${esc(card.status)}</strong></div><div class="work-card-field"><span class="work-card-label">${esc(d.engineering_label)}：</span><span class="work-card-value work-card-link">${esc(d.engineering_value)}</span></div><div class="work-card-field"><span class="work-card-label">${esc(d.mileage_label)}：</span><span class="work-card-value">${esc(card.mileage||d.mileage_default)}</span></div><div class="work-card-field work-card-location"><span class="work-card-label">${esc(d.location_label)}：</span><span class="work-card-value work-card-link">${esc(card.location)}</span></div><button type="button" class="detail-edit work-card-edit" data-detail-edit="${card.id}">${esc(d.edit_button)}</button></div></article>`}
 
 function ensureDetailFileInput(d){
  let input=document.querySelector('#detail-local-file');
@@ -35,17 +35,17 @@ function renderAnalysisDetail(){
  const preview=previewOpen?`<div class="pointcloud-panel"><div class="pointcloud-titlebar"><span>${esc(d.preview_title)}</span><button type="button" data-preview-close aria-label="${esc(d.cancel_button)}">×</button></div><div class="pointcloud-workspace">${cloud?'<canvas class="pointcloud-canvas" data-pointcloud-canvas></canvas>':`<span class="pointcloud-empty">${esc(analysisDetailLoading?d.loading_text:d.empty_preview_text)}</span>`}<div class="pointcloud-tools"><button type="button" data-color-constant ${cloud?'':'disabled'}>${esc(d.constant_button)}</button><button type="button" data-color-strength ${cloud?'':'disabled'}>${esc(d.strength_button)}</button><button type="button" data-geometry ${cloud?'':'disabled'}>${esc(d.geometry_button)}</button><button type="button" data-preview-clear>${esc(d.clear_button)}</button></div>${cloud?`<div class="pointcloud-help">${esc(d.mouse_help)}</div>`:''}</div><div class="pointcloud-footer"><span>${esc(d.file_label)}${esc(entry?.fileName||draft?.fileName||'')}</span><button type="button" data-preview-cancel>${esc(d.cancel_button)}</button><button type="button" data-preview-confirm ${draft?.cloud?'':'disabled'}>${esc(d.confirm_button)}</button></div></div>`:analysisDetailHiddenPreviewId===analysisDetailActive?`<span>${esc(d.preview_closed_text)}</span>`:`<span>${esc(analysisDetailResults.has(analysisDetailActive)?d.preset_result_text:d.awaiting_text)}</span>`;
  document.title=(d.heading||'')+' · '+(cfg.app?.name||'');
  analysisDetailViewer?.destroy();analysisDetailViewer=null;
- $('#app').innerHTML=`<div class="detail-page"><header class="detail-header"><div class="detail-header-title"><span class="detail-header-icon" aria-hidden="true">▤</span>${esc(d.heading)}</div><button type="button" data-detail-home aria-label="${esc(d.close_label)}">×</button></header><div class="detail-body"><aside class="detail-sidebar"><div class="detail-sidebar-shell"><div class="detail-card-list" data-detail-list>${cards.map(card=>detailCardMarkup(card,d)).join('')}</div><div class="detail-scrollbar"><button type="button" data-detail-up aria-label="${esc(d.scroll_up_label)}">▲</button><div class="detail-scroll-rail" data-detail-rail><div class="detail-scroll-thumb" data-detail-thumb role="scrollbar" aria-label="${esc(d.scroll_label)}" tabindex="0"></div></div><button type="button" data-detail-down aria-label="${esc(d.scroll_down_label)}">▼</button></div></div></aside><main class="detail-main"><div class="detail-context"><div><b>${esc(d.route_label)}：</b>${esc(d.route_value)}</div><div><b>${esc(d.segment_label)}：</b>${esc(d.segment_value)}</div><div><b>${esc(d.site_label)}：</b>${esc(d.site_value)}</div><div><b>${esc(d.chute_label)}：</b>${esc(d.chute_value)}</div><button type="button" data-detail-export>${esc(d.export_button)}</button></div><div class="detail-toolbar"><b>${esc(d.detail_label)}</b>${detailQuickNav()}<div class="detail-toolbar-right"><button type="button" data-detail-single ${analysisDetailRunning||analysisDetailLoading?'disabled':''}>${esc(d.single_button)}</button><button type="button" data-detail-all ${analysisDetailRunning||analysisDetailLoading?'disabled':''}>${esc(d.all_button)}</button></div></div><section class="detail-measurements"><table class="detail-measurement-table"><tbody>${headers.map((title,i)=>`<tr><th scope="row">${esc(title)}</th><td>${showValues?esc(values[i]??d.empty_value):''}</td></tr>`).join('')}</tbody></table><div class="detail-measurement-body">${preview}</div></section><div class="detail-bottom"><span class="detail-notice" role="status">${esc(analysisDetailNotice)}</span><button type="button" data-detail-next>${esc(d.next_button)}</button><button type="button" data-detail-back aria-label="${esc(d.back_button)}">↩</button></div></main></div><div id="detail-modal"></div></div>`;
- document.querySelectorAll('[data-detail-nav]').forEach(button=>button.onclick=()=>{const id=button.dataset.detailNav;section=({geometry:'analysis',defect:'image_analysis',flatness:'flatness'})[id]||id;demoState='ready';render()});
+ $('#app').innerHTML=`<div class="detail-page"><header class="detail-header"><div class="detail-header-title"><span class="detail-header-icon" aria-hidden="true">▣</span>${esc(d.heading)}</div><button type="button" data-detail-home aria-label="${esc(d.close_label)}">×</button></header><div class="detail-body"><aside class="detail-sidebar"><div class="detail-sidebar-shell"><div class="detail-card-list" data-detail-list>${cards.map(card=>detailCardMarkup(card,d)).join('')}</div><div class="detail-scrollbar"><button type="button" data-detail-up aria-label="${esc(d.scroll_up_label)}">▲</button><div class="detail-scroll-rail" data-detail-rail><div class="detail-scroll-thumb" data-detail-thumb role="scrollbar" aria-label="${esc(d.scroll_label)}" tabindex="0"></div></div><button type="button" data-detail-down aria-label="${esc(d.scroll_down_label)}">▼</button></div></div></aside><main class="detail-main"><div class="detail-context"><div><b>${esc(d.route_label)}：</b>${esc(d.route_value)}</div><div><b>${esc(d.segment_label)}：</b>${esc(d.segment_value)}</div><div><b>${esc(d.site_label)}：</b>${esc(d.site_value)}</div><div><b>${esc(d.chute_label)}：</b>${esc(d.chute_value)}</div></div><div class="detail-toolbar"><b>${esc(d.detail_label)}</b>${detailQuickNav()}<div class="detail-toolbar-right"><button type="button" data-detail-single ${analysisDetailLoading?'disabled':''}>${esc(d.single_button)}</button><button type="button" data-detail-export>${esc(d.export_button)}</button></div></div><section class="detail-measurements"><table class="detail-measurement-table"><tbody>${headers.map((title,i)=>`<tr><th scope="row">${esc(title)}</th><td>${showValues?esc(values[i]??d.empty_value):''}</td></tr>`).join('')}</tbody></table><div class="detail-measurement-body">${preview}</div></section><div class="detail-bottom"><span class="detail-notice" role="status">${esc(analysisDetailNotice)}</span><button type="button" data-detail-next>${esc(d.next_button)}</button><button type="button" class="workspace-back-button" data-detail-back aria-label="返回上个界面">返回 ↩</button></div></main></div><div id="detail-modal"></div></div>`;
+ document.querySelectorAll('[data-detail-nav]').forEach(button=>button.onclick=()=>{const id=button.dataset.detailNav;analysisDetailViewer?.destroy();analysisDetailViewer=null;section=({geometry:'analysis',defect:'image_analysis',flatness:'flatness'})[id]||id;demoState='ready';render()});
  document.querySelector('[data-detail-home]').onclick=()=>{section='home';render()};
- document.querySelectorAll('[data-detail-back]').forEach(button=>button.onclick=()=>{section='analysis';render()});
- document.querySelector('[data-detail-next]').onclick=()=>{section='inspection';sub='geometry';demoState='done';render()};
+ document.querySelectorAll('[data-detail-back]').forEach(button=>button.onclick=()=>window.workspaceGoBack());
+ document.querySelector('[data-detail-next]').onclick=()=>{const cards=detailCards();if(!cards.length)return;analysisDetailActive=(analysisDetailActive+1)%cards.length;analysisDetailHiddenPreviewId=-1;analysisDetailEmptyPreviewId=-1;analysisDetailDraft=null;analysisDetailNotice='';renderAnalysisDetail()};
  document.querySelectorAll('[data-detail-card]').forEach(card=>card.onclick=event=>{if(event.target.closest('[data-detail-edit]'))return;analysisDetailActive=Number(card.dataset.detailCard);analysisDetailHiddenPreviewId=-1;renderAnalysisDetail()});
  document.querySelectorAll('[data-detail-edit]').forEach(button=>button.onclick=event=>{event.stopPropagation();detailEdit(Number(button.dataset.detailEdit))});
  const fileInput=ensureDetailFileInput(d);
  document.querySelector('[data-detail-single]').onclick=()=>{fileInput.value='';fileInput.click()};
  fileInput.onchange=event=>{const file=event.target.files?.[0];if(file)detailLoadLocalFile(file)};
- document.querySelector('[data-detail-all]').onclick=startOneClickSelection;
+
  document.querySelector('[data-detail-export]').onclick=async()=>{if(await detailExport()){section='measurement_export';render()}};
  document.querySelector('[data-preview-close]')?.addEventListener('click',detailCancelPreview);
  document.querySelector('[data-preview-cancel]')?.addEventListener('click',detailCancelPreview);
@@ -62,7 +62,7 @@ function renderAnalysisDetail(){
 }
 
 async function detailLoadLocalFile(file){
- if(analysisDetailLoading||analysisDetailRunning)return;
+ if(analysisDetailLoading)return;
  const d=detailConfig(),id=analysisDetailActive,draft={id,fileName:file.name,cloud:null};
  analysisDetailDraft=draft;analysisDetailLoading=true;analysisDetailEmptyPreviewId=-1;analysisDetailHiddenPreviewId=-1;analysisDetailNotice=d.loading_notice||'';analysisDetailViews.set(id,{yaw:1.3,pitch:.15,zoom:1,panX:0,panY:0,geometry:false,colorMode:'plain'});renderAnalysisDetail();
  let timeoutId;
@@ -95,20 +95,6 @@ function detailClearPreview(){
  const d=detailConfig(),id=analysisDetailActive,base=obj(d.cards||'',';')[id]?.[2]||d.pending_status;
  if(analysisDetailStatuses.get(id)===d.done_status&&base!==d.done_status){analysisDetailDoneAdded=Math.max(0,analysisDetailDoneAdded-1);analysisDetailPendingUsed=Math.max(0,analysisDetailPendingUsed-1)}
  analysisDetailStatuses.delete(id);analysisDetailResults.delete(id);analysisDetailClouds.delete(id);analysisDetailDraft=null;analysisDetailLoading=false;analysisDetailEmptyPreviewId=id;analysisDetailHiddenPreviewId=-1;analysisDetailNotice=d.cleared_notice||'';renderAnalysisDetail();
-}
-
-function detailRun(mode){
- if(analysisDetailRunning||analysisDetailLoading)return;
- const d=detailConfig(),cards=detailCards(),source=analysisDetailSource;
- analysisDetailDraft=null;analysisDetailRunning=true;analysisDetailNotice=d.all_running_notice||'';
- cards.forEach(card=>{if(card.status!==d.done_status)analysisDetailStatuses.set(card.id,d.working_status||'')});render();
- setTimeout(()=>{
-  if(source!==analysisDetailSource)return;
-  const remaining=Math.max(0,(Number(d.pending_count)||0)-analysisDetailPendingUsed),newlyDone=Math.min(remaining,cards.filter(card=>card.status!==d.done_status).length);analysisDetailDoneAdded+=newlyDone;analysisDetailPendingUsed+=newlyDone;
-  cards.forEach(card=>{analysisDetailStatuses.set(card.id,(cfg.analysis_detail||{}).done_status||'');analysisDetailResults.add(card.id)});
-  analysisDetailRunning=false;analysisDetailNotice=(cfg.analysis_detail||{}).done_notice||'';analysisStatuses.set(analysisDetailTaskId,(cfg.analysis||{}).done_status||'');
-  if(['analysis_detail','measurement_export','one_click_analysis'].includes(section))render();
- },Math.max(300,Number(d.analysis_delay_ms)||1800));
 }
 
 function detailEdit(id){
@@ -150,105 +136,14 @@ function renderMeasurementExport(){
  const doneCount=Math.max(0,(Number(d.analyzed_count)||0)+analysisDetailDoneAdded),pendingCount=Math.max(0,(Number(d.pending_count)||0)-analysisDetailPendingUsed);
  document.title=(e.heading||d.heading||'')+' · '+(cfg.app?.name||'');
  analysisDetailViewer?.destroy();analysisDetailViewer=null;
- $('#app').innerHTML=`<div class="detail-page export-page"><header class="detail-header"><div class="detail-header-title"><span class="detail-header-icon" aria-hidden="true">▤</span>${esc(e.heading||d.heading)}</div><button type="button" data-export-home aria-label="${esc(d.close_label)}">×</button></header><div class="detail-body"><aside class="detail-sidebar"><div class="detail-sidebar-shell"><div class="detail-card-list" data-detail-list>${cards.map(card=>detailCardMarkup(card,d)).join('')}</div><div class="detail-scrollbar"><button type="button" data-detail-up aria-label="${esc(d.scroll_up_label)}">▲</button><div class="detail-scroll-rail" data-detail-rail><div class="detail-scroll-thumb" data-detail-thumb role="scrollbar" aria-label="${esc(d.scroll_label)}" tabindex="0"></div></div><button type="button" data-detail-down aria-label="${esc(d.scroll_down_label)}">▼</button></div></div></aside><main class="detail-main export-main"><div class="detail-context"><div><b>${esc(d.route_label)}：</b>${esc(d.route_value)}</div><div><b>${esc(d.segment_label)}：</b>${esc(d.segment_value)}</div><div><b>${esc(d.site_label)}：</b>${esc(d.site_value)}</div><div><b>${esc(d.chute_label)}：</b>${esc(d.chute_value)}</div><button type="button" data-export-download>${esc(d.export_button)}</button></div><div class="detail-toolbar"><b>${esc(d.detail_label)}</b><div class="detail-toolbar-right"><span>${esc(d.analyzed_label)}：<em>${doneCount}${esc(d.count_unit)}</em></span><span>${esc(d.pending_label)}：<em>${pendingCount}${esc(d.count_unit)}</em></span><span>${esc(d.no_data_label)}：<em>${esc(d.no_data_count)}${esc(d.count_unit)}</em></span><button type="button" data-export-single>${esc(d.single_button)}</button><button type="button" data-export-all ${analysisDetailRunning?'disabled':''}>${esc(d.all_button)}</button></div></div><section class="export-results"><div class="export-table-wrap"><table class="export-table"><thead><tr><th scope="col">${esc(e.group_heading)}</th>${headers.map(title=>`<th scope="col">${esc(title)}</th>`).join('')}</tr></thead><tbody>${rowLabels.map((label,row)=>`<tr><th scope="row">${esc(label)}</th>${headers.map((_,i)=>`<td>${ready?esc(values[i]??d.empty_value):''}</td>`).join('')}</tr>`).join('')}</tbody></table></div><div class="export-blank">${esc(e.awaiting_text||d.awaiting_text)}</div></section><div class="detail-bottom"><span class="detail-notice" role="status">${esc(analysisDetailNotice)}</span><button type="button" data-export-next>${esc(d.next_button)}</button><button type="button" data-export-back aria-label="${esc(d.back_button)}">↩</button></div></main></div><div id="detail-modal"></div></div>`;
+ $('#app').innerHTML=`<div class="detail-page export-page"><header class="detail-header"><div class="detail-header-title"><span class="detail-header-icon" aria-hidden="true">▤</span>${esc(e.heading||d.heading)}</div><button type="button" data-export-home aria-label="${esc(d.close_label)}">×</button></header><div class="detail-body"><aside class="detail-sidebar"><div class="detail-sidebar-shell"><div class="detail-card-list" data-detail-list>${cards.map(card=>detailCardMarkup(card,d)).join('')}</div><div class="detail-scrollbar"><button type="button" data-detail-up aria-label="${esc(d.scroll_up_label)}">▲</button><div class="detail-scroll-rail" data-detail-rail><div class="detail-scroll-thumb" data-detail-thumb role="scrollbar" aria-label="${esc(d.scroll_label)}" tabindex="0"></div></div><button type="button" data-detail-down aria-label="${esc(d.scroll_down_label)}">▼</button></div></div></aside><main class="detail-main export-main"><div class="detail-context"><div><b>${esc(d.route_label)}：</b>${esc(d.route_value)}</div><div><b>${esc(d.segment_label)}：</b>${esc(d.segment_value)}</div><div><b>${esc(d.site_label)}：</b>${esc(d.site_value)}</div><div><b>${esc(d.chute_label)}：</b>${esc(d.chute_value)}</div><button type="button" data-export-download>${esc(d.export_button)}</button></div><div class="detail-toolbar"><b>${esc(d.detail_label)}</b><div class="detail-toolbar-right"><span>${esc(d.analyzed_label)}：<em>${doneCount}${esc(d.count_unit)}</em></span><span>${esc(d.pending_label)}：<em>${pendingCount}${esc(d.count_unit)}</em></span><span>${esc(d.no_data_label)}：<em>${esc(d.no_data_count)}${esc(d.count_unit)}</em></span><button type="button" data-export-single>${esc(d.single_button)}</button></div></div><section class="export-results"><div class="export-table-wrap"><table class="export-table"><thead><tr><th scope="col">${esc(e.group_heading)}</th>${headers.map(title=>`<th scope="col">${esc(title)}</th>`).join('')}</tr></thead><tbody>${rowLabels.map((label,row)=>`<tr><th scope="row">${esc(label)}</th>${headers.map((_,i)=>`<td>${ready?esc(values[i]??d.empty_value):''}</td>`).join('')}</tr>`).join('')}</tbody></table></div><div class="export-blank">${esc(e.awaiting_text||d.awaiting_text)}</div></section><div class="detail-bottom"><span class="detail-notice" role="status">${esc(analysisDetailNotice)}</span><button type="button" data-export-next>${esc(d.next_button)}</button><button type="button" data-export-back aria-label="${esc(d.back_button)}">↩</button></div></main></div><div id="detail-modal"></div></div>`;
  document.querySelector('[data-export-home]').onclick=()=>{section='home';render()};
  document.querySelectorAll('[data-export-back]').forEach(button=>button.onclick=()=>{section='analysis_detail';render()});
  document.querySelector('[data-export-download]').onclick=detailExport;
  document.querySelector('[data-export-single]').onclick=()=>{section='analysis_detail';render();document.querySelector('[data-detail-single]')?.click()};
- document.querySelector('[data-export-all]').onclick=startOneClickSelection;
- document.querySelector('[data-export-next]').onclick=()=>{section='inspection';sub='geometry';demoState='done';render()};
+
+ document.querySelector('[data-export-next]').onclick=()=>{const cards=detailCards();if(!cards.length)return;analysisDetailActive=(analysisDetailActive+1)%cards.length;analysisDetailHiddenPreviewId=-1;analysisDetailEmptyPreviewId=-1;analysisDetailDraft=null;analysisDetailNotice='';section='analysis_detail';renderAnalysisDetail()};
  document.querySelectorAll('[data-detail-card]').forEach(card=>card.onclick=event=>{if(event.target.closest('[data-detail-edit]'))return;analysisDetailActive=Number(card.dataset.detailCard);renderMeasurementExport()});
- document.querySelectorAll('[data-detail-edit]').forEach(button=>button.onclick=event=>{event.stopPropagation();detailEdit(Number(button.dataset.detailEdit))});
- detailBindScroll();
-}
-
-function ensureOneClickFolderInput(){
- let input=document.querySelector('#one-click-folder-input');
- if(!input){input=document.createElement('input');input.type='file';input.id='one-click-folder-input';input.hidden=true;input.multiple=true;input.setAttribute('webkitdirectory','');input.setAttribute('directory','');document.body.appendChild(input)}
- return input;
-}
-
-async function startOneClickSelection(){
- if(oneClickLoading)return;
- const expected=(cfg.one_click_analysis||{}).folder_name||'导出数据';
- const fail=message=>{analysisDetailNotice=message;const notice=document.querySelector('.detail-notice');if(notice)notice.textContent=message};
- if(typeof window!=='undefined'&&typeof window.showDirectoryPicker==='function'){
-  try{
-   const handle=await window.showDirectoryPicker({mode:'read'});
-   if(handle.name!==expected){fail((cfg.one_click_analysis||{}).folder_error||'请选择 data 下的导出数据文件夹');return}
-   const names=[];
-   for await(const entry of handle.values())if(entry.kind==='file'&&/\.(ply|xyz|pts|txt|csv)$/i.test(entry.name))names.push(entry.name);
-   if(!names.length){fail('所选文件夹中没有点云文件');return}
-   runOneClickAnalysis(expected,names);return;
-  }catch(error){
-   if(error?.name==='AbortError')return;
-   if(error?.name!=='SecurityError'&&error?.name!=='NotSupportedError'){fail('文件夹选择失败：'+error.message);return}
-  }
- }
- const input=ensureOneClickFolderInput();input.value='';
- input.onchange=event=>{
-  const files=Array.from(event.target.files||[]),folder=(files[0]?.webkitRelativePath||'').replaceAll('\\','/').split('/')[0];
-  const pointFiles=files.filter(file=>/\.(ply|xyz|pts|txt|csv)$/i.test(file.name));
-  if(!files.length)return;
-  if(folder&&folder!==expected){fail((cfg.one_click_analysis||{}).folder_error||'请选择 data 下的导出数据文件夹');return}
-  if(!pointFiles.length){fail('所选文件夹中没有点云文件');return}
-  runOneClickAnalysis(expected,pointFiles.map(file=>file.name));
- };
- input.click();
-}
-
-function updateOneClickCard(id,status){
- const d=detailConfig(),badge=document.querySelector(`[data-detail-card="${id}"] .detail-badge`);
- analysisDetailStatuses.set(id,status);
- if(badge){badge.classList.add('changing');setTimeout(()=>{badge.textContent=status;badge.classList.toggle('done',status===d.done_status);badge.classList.toggle('working',status===d.working_status);badge.classList.toggle('pending',status===d.pending_status);badge.classList.remove('changing')},110)}
- const done=document.querySelector('[data-one-click-done]'),pending=document.querySelector('[data-one-click-pending]');
- if(done)done.textContent=Math.max(0,(Number(d.analyzed_count)||0)+analysisDetailDoneAdded)+String(d.count_unit||'');
- if(pending)pending.textContent=Math.max(0,(Number(d.pending_count)||0)-analysisDetailPendingUsed)+String(d.count_unit||'');
-}
-
-async function runOneClickAnalysis(folderName,names){
- const e=cfg.one_click_analysis||{},d=detailConfig(),delay=500;
- const cards=detailCards().slice(0,3),source=analysisDetailSource;
- oneClickRows=null;oneClickSummary=null;oneClickLoading=true;analysisDetailNotice=e.loading_notice||'正在分析导出数据…';
- analysisDetailDoneAdded=0;analysisDetailPendingUsed=0;
- cards.forEach(card=>analysisDetailStatuses.set(card.id,d.pending_status||'未分析'));
- section='one_click_analysis';render();
- const responsePromise=fetch((window.API_BASE||'')+'/api/one-click-analysis',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({folder_name:folderName,files:names})}).then(async response=>{const result=await response.json();if(!response.ok||!result.ok)throw Error(result.error||String(response.status));return result}).catch(error=>({error}));
- try{
-  for(const card of cards){
-   updateOneClickCard(card.id,d.working_status||'分析中');
-   await new Promise(resolve=>setTimeout(resolve,delay));
-   analysisDetailResults.add(card.id);
-   analysisDetailDoneAdded++;analysisDetailPendingUsed++;
-   updateOneClickCard(card.id,d.done_status||'分析完成');
-   await new Promise(resolve=>setTimeout(resolve,delay));
-  }
-  const result=await responsePromise;if(result.error)throw result.error;
-  if(source!==analysisDetailSource)return;
-  oneClickRows=result.rows;oneClickSummary=result.summary;
-  analysisDetailNotice=(e.done_notice||'分析完成：')+result.measured_count+'/'+result.file_count;
- }catch(error){analysisDetailNotice=(e.error_prefix||'分析失败：')+error.message}
- finally{oneClickLoading=false;if(section==='one_click_analysis')render()}
-}
-
-function renderOneClickAnalysis(){
- const d=detailConfig(),e=cfg.one_click_analysis||{},cards=detailCards();
- if(analysisDetailActive>=cards.length)analysisDetailActive=0;
- const headers=[...split(d.measurement_columns||'','|'),e.twist_label||''];
- const shown=Array.isArray(oneClickRows)&&!oneClickLoading;
- const table=shown?`<div class="export-table-wrap"><table class="export-table"><thead><tr><th scope="col">${esc(e.group_heading||'')}</th>${headers.map(title=>`<th scope="col">${esc(title)}</th>`).join('')}</tr></thead><tbody>${oneClickRows.map(entry=>`<tr><th scope="row" title="${esc(entry.file_name)}">${esc(entry.label)}</th>${headers.slice(0,6).map((_,i)=>`<td>${esc(entry.values?.[i]||'')}</td>`).join('')}<td>${esc(entry.twist)}</td></tr>`).join('')}<tr><th scope="row">${esc(e.summary_label||'总结')}</th>${headers.slice(0,6).map((_,i)=>`<td>${esc(oneClickSummary?.[i]||'')}</td>`).join('')}<td>----</td></tr></tbody></table></div>`:'';
- const allButton=oneClickLoading?`<span class="one-click-spinner" aria-hidden="true"></span>${esc(e.loading_button||'分析中')}`:esc(d.all_button);
- document.title=(e.heading||d.heading||'')+' · '+(cfg.app?.name||'');
- analysisDetailViewer?.destroy();analysisDetailViewer=null;
- $('#app').innerHTML=`<div class="detail-page export-page one-click-page"><header class="detail-header"><div class="detail-header-title"><span class="detail-header-icon" aria-hidden="true">▤</span>${esc(e.heading||d.heading)}</div><button type="button" data-export-home aria-label="${esc(d.close_label)}">×</button></header><div class="detail-body"><aside class="detail-sidebar"><div class="detail-sidebar-shell"><div class="detail-card-list" data-detail-list>${cards.map(card=>detailCardMarkup(card,d)).join('')}</div><div class="detail-scrollbar"><button type="button" data-detail-up aria-label="${esc(d.scroll_up_label)}">▲</button><div class="detail-scroll-rail" data-detail-rail><div class="detail-scroll-thumb" data-detail-thumb role="scrollbar" aria-label="${esc(d.scroll_label)}" tabindex="0"></div></div><button type="button" data-detail-down aria-label="${esc(d.scroll_down_label)}">▼</button></div></div></aside><main class="detail-main export-main"><div class="detail-context"><div><b>${esc(d.route_label)}：</b>${esc(d.route_value)}</div><div><b>${esc(d.segment_label)}：</b>${esc(d.segment_value)}</div><div><b>${esc(d.site_label)}：</b>${esc(d.site_value)}</div><div><b>${esc(d.chute_label)}：</b>${esc(d.chute_value)}</div><button type="button" data-export-download>${esc(d.export_button)}</button></div><div class="detail-toolbar"><b>${esc(d.detail_label)}</b>${detailQuickNav()}<div class="detail-toolbar-right"><button type="button" data-export-single>${esc(d.single_button)}</button><button type="button" data-export-all class="${oneClickLoading?'one-click-loading':''}" ${oneClickLoading?'disabled':''}>${allButton}</button></div></div><section class="export-results">${table}${shown?'':`<div class="export-blank">${esc(oneClickLoading?(e.loading_notice||'正在分析导出数据…'):shown?(e.awaiting_text||''):(e.select_notice||'请选择导出数据文件夹'))}</div>`}</section><div class="detail-bottom"><span class="detail-notice" role="status">${esc(analysisDetailNotice)}</span><button type="button" data-export-next>${esc(d.next_button)}</button><button type="button" data-export-back aria-label="${esc(d.back_button)}">↩</button></div></main></div><div id="detail-modal"></div></div>`;
- document.querySelectorAll('[data-detail-nav]').forEach(button=>button.onclick=()=>{const id=button.dataset.detailNav;section=({geometry:'analysis',defect:'image_analysis',flatness:'flatness'})[id]||id;demoState='ready';render()});
- document.querySelector('[data-export-home]').onclick=()=>{section='home';render()};
- document.querySelectorAll('[data-export-back]').forEach(button=>button.onclick=()=>{section='measurement_export';render()});
- document.querySelector('[data-export-download]').onclick=detailExport;
- document.querySelector('[data-export-single]').onclick=()=>{section='analysis_detail';render();document.querySelector('[data-detail-single]')?.click()};
- document.querySelector('[data-export-all]').onclick=startOneClickSelection;
- document.querySelector('[data-export-next]').onclick=()=>{section='inspection';sub='geometry';demoState='done';render()};
- document.querySelectorAll('[data-detail-card]').forEach(card=>card.onclick=event=>{if(event.target.closest('[data-detail-edit]'))return;analysisDetailActive=Number(card.dataset.detailCard);renderOneClickAnalysis()});
  document.querySelectorAll('[data-detail-edit]').forEach(button=>button.onclick=event=>{event.stopPropagation();detailEdit(Number(button.dataset.detailEdit))});
  detailBindScroll();
 }

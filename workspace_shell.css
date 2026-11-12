@@ -1,0 +1,646 @@
+/* Shared desktop shell for the five work pages, using BIM as the reference. */
+.detail-page,
+.image-analysis-page,
+.flatness-page,
+.capture-page {
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.detail-header,
+.image-analysis-header,
+.flatness-header,
+.capture-header {
+  box-sizing: border-box;
+  height: 58px;
+  min-height: 58px;
+}
+
+.detail-body,
+.image-analysis-body,
+.flatness-body,
+.capture-body {
+  grid-template-columns: clamp(184px, 12.4vw, 270px) minmax(0, 1fr);
+  height: calc(100vh - 58px);
+  min-height: 0;
+}
+
+.detail-sidebar,
+.image-analysis-sidebar,
+.flatness-sidebar,
+.capture-page .capture-sidebar {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 8px 5px 7px 12px;
+  background: #62696b;
+  border-right: 2px solid #add9e2;
+  overflow: hidden;
+}
+
+.flatness-card-list {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  align-content: start;
+}
+
+.detail-page:not(.export-page) .detail-main,
+.detail-main,
+.image-analysis-main,
+.flatness-main,
+.capture-page .capture-main,
+.bim-main {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  padding: 8px 8px 6px 12px;
+  display: grid;
+  grid-template-rows: 43px 42px minmax(0, 1fr) 31px;
+  gap: 5px;
+}
+
+.detail-context,
+.image-analysis-context,
+.flatness-context,
+.capture-context,
+.bim-context {
+  box-sizing: border-box;
+  min-width: 0;
+  height: 100%;
+  grid-template-columns: 1.1fr 0.8fr 1.1fr 1fr;
+  gap: 5px;
+}
+
+.capture-context > div,
+.flatness-context > div,
+.image-analysis-context > div,
+.detail-context > div,
+.bim-context > div {
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.bim-toolbar,
+.capture-detail-row,
+.flatness-toolbar,
+.image-analysis-toolbar,
+.detail-page:not(.export-page) .detail-toolbar {
+  box-sizing: border-box;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: clamp(58px, 5vw, 100px) minmax(0, 1fr) 232px;
+  border-bottom: 1px solid #d2e9ee;
+  align-items: center;
+  gap: 10px;
+}
+
+.bim-toolbar > b,
+.capture-detail-row > b,
+.flatness-toolbar > b,
+.image-analysis-toolbar > b,
+.detail-page:not(.export-page) .detail-toolbar > b {
+  min-width: 0;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.bim-quick-nav,
+.capture-quick-nav,
+.flatness-quick-nav,
+.image-analysis-quick-nav,
+.detail-quick-nav {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 8px;
+  width: 100%;
+  max-width: 940px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.bim-quick-nav button,
+.capture-quick-nav button,
+.flatness-quick-nav button,
+.image-analysis-quick-nav button,
+.detail-quick-nav button {
+  box-sizing: border-box;
+  flex: none;
+  width: 84px;
+  min-width: 84px;
+  height: 31px;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 4px;
+  background: #25c0ed;
+  color: #fff;
+  font: 13px "Microsoft YaHei";
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.16s;
+}
+
+.bim-quick-nav button:hover,
+.bim-quick-nav button:focus-visible,
+.capture-quick-nav button:hover,
+.capture-quick-nav button:focus-visible,
+.flatness-quick-nav button:hover,
+.flatness-quick-nav button:focus-visible,
+.image-analysis-quick-nav button:hover,
+.image-analysis-quick-nav button:focus-visible,
+.detail-quick-nav button:hover,
+.detail-quick-nav button:focus-visible {
+  background: #12add8;
+  outline: none;
+}
+
+.bim-quick-nav button.active,
+.capture-quick-nav button.active,
+.flatness-quick-nav button.active,
+.image-analysis-quick-nav button.active,
+.detail-quick-nav button.active {
+  box-shadow: inset 0 -3px 0 #0b8299;
+}
+
+.capture-detail-row > .capture-quick-nav,
+.flatness-toolbar > .flatness-quick-nav,
+.image-analysis-toolbar > .image-analysis-quick-nav,
+.detail-page:not(.export-page) .detail-toolbar > .detail-quick-nav,
+.bim-toolbar > .bim-quick-nav {
+  justify-self: stretch;
+}
+
+.capture-detail-row > .capture-start,
+.flatness-toolbar > button,
+.image-analysis-toolbar > button,
+.detail-page:not(.export-page) .detail-toolbar-right,
+.bim-toolbar-actions {
+  grid-column: 3;
+  justify-self: end;
+}
+
+.detail-page:not(.export-page) .detail-toolbar-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  width: 232px;
+  min-width: 0;
+}
+
+.bim-toolbar-actions {
+  width: 232px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 1100px) and (min-width: 901px) {
+  .bim-toolbar,
+  .capture-detail-row,
+  .flatness-toolbar,
+  .image-analysis-toolbar,
+  .detail-page:not(.export-page) .detail-toolbar {
+    gap: 6px;
+  }
+
+  .bim-quick-nav,
+  .capture-quick-nav,
+  .flatness-quick-nav,
+  .image-analysis-quick-nav,
+  .detail-quick-nav {
+    gap: 4px;
+  }
+}
+
+@media (max-width: 900px) {
+  .detail-body,
+  .image-analysis-body,
+  .flatness-body,
+  .capture-body {
+    grid-template-columns: 155px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .detail-body,
+  .image-analysis-body,
+  .flatness-body,
+  .capture-body {
+    height: auto;
+    min-height: calc(100vh - 58px);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detail-sidebar,
+  .image-analysis-sidebar,
+  .flatness-sidebar,
+  .capture-page .capture-sidebar {
+    height: auto;
+  }
+}
+
+
+/* Shared visual grammar for all five work page shells. */
+.detail-header,
+.image-analysis-header,
+.flatness-header,
+.capture-header {
+  height: 58px;
+  min-height: 58px;
+  padding: 0 13px 0 18px;
+  background: #666;
+}
+
+.detail-header-title,
+.image-analysis-header > div,
+.flatness-header-title,
+.capture-header-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.flatness-header .flatness-header-title {
+  font-size: 18px;
+}
+
+.detail-header-icon,
+.image-analysis-header > div > span:first-child,
+.flatness-header-icon,
+.capture-header-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.detail-context,
+.image-analysis-context,
+.flatness-context,
+.capture-context,
+.bim-context {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.8fr) minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.detail-context > div,
+.image-analysis-context > div,
+.flatness-context > div,
+.capture-context > div,
+.bim-context > div {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 100%;
+  padding: 0 8px;
+  overflow: hidden;
+  background: #586265;
+  box-shadow: inset 3px 0 #22c2e8;
+  color: #fff;
+  font: 12px/1.3 "Microsoft YaHei", Arial, sans-serif;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.detail-context b,
+.image-analysis-context b,
+.flatness-context b,
+.capture-context b,
+.bim-context b {
+  flex: none;
+  font-weight: 400;
+}
+
+.detail-context span,
+.image-analysis-context span,
+.flatness-context span,
+.capture-context span,
+.bim-context span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-sidebar-shell,
+.image-analysis-sidebar-shell,
+.capture-scroll-shell {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.detail-scrollbar,
+.image-analysis-scrollbar,
+.capture-scrollbar {
+  display: none !important;
+}
+
+.detail-card-list,
+.image-analysis-card-list,
+.capture-card-list,
+.flatness-card-list,
+.bim-sidebar-list {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  height: 100%;
+  min-height: 0;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 0 3px 5px 0;
+  overscroll-behavior: contain;
+  scrollbar-color: #a4cbd3 #566366;
+  scrollbar-width: thin;
+}
+
+.detail-card-list::-webkit-scrollbar,
+.image-analysis-card-list::-webkit-scrollbar,
+.capture-card-list::-webkit-scrollbar,
+.flatness-card-list::-webkit-scrollbar,
+.bim-sidebar-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.detail-card-list::-webkit-scrollbar-track,
+.image-analysis-card-list::-webkit-scrollbar-track,
+.capture-card-list::-webkit-scrollbar-track,
+.flatness-card-list::-webkit-scrollbar-track,
+.bim-sidebar-list::-webkit-scrollbar-track {
+  background: #566366;
+}
+
+.detail-card-list::-webkit-scrollbar-thumb,
+.image-analysis-card-list::-webkit-scrollbar-thumb,
+.capture-card-list::-webkit-scrollbar-thumb,
+.flatness-card-list::-webkit-scrollbar-thumb,
+.bim-sidebar-list::-webkit-scrollbar-thumb {
+  border: 2px solid #566366;
+  border-radius: 6px;
+  background: #a4cbd3;
+}
+
+.detail-card-list::-webkit-scrollbar-thumb:hover,
+.image-analysis-card-list::-webkit-scrollbar-thumb:hover,
+.capture-card-list::-webkit-scrollbar-thumb:hover,
+.flatness-card-list::-webkit-scrollbar-thumb:hover,
+.bim-sidebar-list::-webkit-scrollbar-thumb:hover {
+  background: #c7e3e8;
+}
+
+.detail-sidebar-shell .detail-card-list,
+.image-analysis-sidebar-shell .image-analysis-card-list,
+.capture-scroll-shell .capture-card-list,
+.flatness-sidebar .flatness-card-list,
+.bim-page .detail-card-list {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 0 3px 5px 0;
+  background: transparent;
+  scrollbar-color: #a4cbd3 #566366;
+  scrollbar-width: thin;
+}
+
+.capture-scroll-shell .capture-card-list::-webkit-scrollbar {
+  width: 10px;
+  height: auto;
+}
+
+.detail-sidebar,
+.image-analysis-sidebar,
+.flatness-sidebar,
+.capture-page .capture-sidebar,
+.bim-page .detail-sidebar {
+  box-sizing: border-box;
+  padding: 8px 5px 7px 12px;
+  overflow: hidden;
+}
+
+.detail-card,
+.image-analysis-card,
+.capture-card,
+.flatness-card,
+.bim-page .detail-card {
+  box-sizing: border-box;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  height: max(31vh, 260px);
+  min-height: 260px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.detail-card.selected,
+.image-analysis-card.selected,
+.capture-card.selected,
+.flatness-card.selected,
+.bim-page .detail-card.selected {
+  border-color: #2bc4ec;
+}
+
+.detail-card-accent,
+.image-analysis-card-accent,
+.capture-card .card-accent,
+.flatness-card-top,
+.bim-page .detail-card-accent {
+  position: relative;
+  flex: none;
+  height: 49px;
+  background: #fff;
+}
+
+.detail-card.selected .detail-card-accent,
+.image-analysis-card.selected .image-analysis-card-accent,
+.capture-card.selected .card-accent,
+.flatness-card.selected .flatness-card-top,
+.bim-page .detail-card.selected .detail-card-accent {
+  background: #25c1ed;
+}
+
+.detail-card.selected .detail-card-accent::after,
+.image-analysis-card.selected .image-analysis-card-accent::after,
+.capture-card.selected .card-accent::after,
+.flatness-card.selected .flatness-card-top::after,
+.bim-page .detail-card.selected .detail-card-accent::after {
+  content: "▶";
+  position: absolute;
+  top: 14px;
+  left: 3px;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.work-card .work-card-inner {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  min-height: 0;
+  padding: 8px 7px 9px;
+  color: #455356;
+  font: 12px/1.35 "Microsoft YaHei", Arial, sans-serif;
+}
+
+.work-card .work-card-status,
+.work-card .work-card-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+  margin: 0 0 7px;
+}
+
+.work-card .work-card-status .work-card-label,
+.work-card .work-card-field .work-card-label {
+  color: #455356;
+  font: inherit;
+}
+
+.work-card .work-card-value {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  color: #67858d;
+  font: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.work-card .work-card-value.work-card-link {
+  color: #21afd0;
+}
+
+.work-card .work-card-location {
+  margin-top: auto;
+  margin-bottom: 8px;
+}
+
+.work-card .work-card-badge {
+  align-self: flex-start;
+  border-radius: 4px;
+  padding: 3px 7px;
+  color: #fff;
+  font: 11px/1.35 "Microsoft YaHei", Arial, sans-serif;
+}
+
+.detail-badge.work-card-badge,
+.image-analysis-badge.work-card-badge,
+.capture-badge.work-card-badge,
+.flatness-badge.work-card-badge {
+  background: #f1a92a;
+}
+
+.detail-badge.work-card-badge.done,
+.image-analysis-badge.work-card-badge.done,
+.capture-badge.work-card-badge.done,
+.flatness-badge.work-card-badge.done {
+  background: #56ca30;
+}
+
+.detail-badge.work-card-badge.working,
+.image-analysis-badge.work-card-badge.working,
+.capture-badge.work-card-badge.working,
+.flatness-badge.work-card-badge.working {
+  background: #26bce5;
+}
+
+.work-card .work-card-edit {
+  box-sizing: border-box;
+  flex: none;
+  width: 100%;
+  min-height: 26px;
+  margin: 0;
+  border: 1px solid #d6e0e2;
+  border-radius: 3px;
+  background: #fff;
+  color: #45616a;
+  padding: 4px;
+  cursor: pointer;
+  font: 12px/1.2 "Microsoft YaHei", Arial, sans-serif;
+}
+
+.work-card .work-card-edit:hover {
+  background: #eaf9fc;
+}
+
+@media (max-width: 700px) {
+  .detail-page:not(.export-page) .detail-context,
+  .image-analysis-context,
+  .flatness-context,
+  .capture-context,
+  .bim-context {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 34px;
+  }
+
+  .detail-card-list,
+  .image-analysis-card-list,
+  .capture-card-list,
+  .flatness-card-list,
+  .bim-sidebar-list {
+    height: 230px;
+    min-height: 0;
+  }
+
+  .detail-card,
+  .image-analysis-card,
+  .capture-card,
+  .flatness-card,
+  .bim-page .detail-card {
+    height: 260px;
+    min-height: 260px;
+  }
+}
+
+
+/* Shared fixed-position previous-view control for all workspace pages. */
+.capture-actions,.detail-bottom{padding-right:92px}
+#app .workspace-back-button {
+  box-sizing: border-box;
+  position: fixed;
+  right: 8px;
+  bottom: 8px;
+  z-index: 1200;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  min-width: 84px;
+  height: 31px;
+  min-height: 31px;
+  margin: 0;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 3px;
+  background: #5c696b;
+  color: #fff;
+  font: 13px "Microsoft YaHei", sans-serif;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+#app .workspace-back-button:hover,
+#app .workspace-back-button:focus-visible {
+  background: #4f5d5f;
+  outline: 2px solid #8bd7e6;
+  outline-offset: 2px;
+}

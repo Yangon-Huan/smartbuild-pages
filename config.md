@@ -4,188 +4,12 @@
 # 每个 ## 区块对应一个页面或功能，冒号左边是配置名，右边是显示值。
 
 ## app
-name: 百隧智云
-subtitle: 隧道施工智能检测装备与BIM协同系统
-project: 智慧感知与计算项目演示
-project_code: IMC-2026-DEMO
-operator: 演示账号
-site: 隧道施工现场演示
-status: 本地演示
-logo_text: 百隧智云
-footer: 百隧智云创新大赛 · 本地预设演示数据
 
-## schedule
-start_time: 08:30:00
-end_time: 17:30:00
-current_stage: 智能检测
-
-## labels
-workspace: 演示章节 / WORKSPACE
-current_project: 当前项目
-stage: 当前阶段
-project_overview: 项目总览
-live_clock: 本地时间
-window: 演示时间窗
-start: 开始时间
-end: 结束时间
-progress: 处理进度
-status: 任务状态
-results: 检测结果
-start_action: 开始检测
-next_action: 下一步
-previous_action: 上一步
-complete_action: 完成
-record: 检测记录
-local_asset: 本地演示素材
-preset_notice: 预设演示数据 · 未连接现场设备与AI推理服务
-breadcrumbs: 功能演示 / 隧道施工智能检测
 
 ## navigation
 items: 项目背景|background|◈;智能装备|equipment|▣;智慧感知|perception|⌁;智能检测|inspection|▤;BIM数字孪生|bim|⬡
 
-## background
-heading: 面向隧道施工的百隧智云方案
-lead: 智能装备、智慧感知、智能检测与BIM数字孪生协同构成施工质量管理闭环。
-image: data/首页.png
-start_time: 08:30:00
-end_time: 08:30:30
-progress: 100
-state: 方案总览
-panel_title: 四大能力协同闭环
-cards: 智能装备|多传感器移动采集;智慧感知|点云与RGB语义理解;智能检测|几何与外观质量分析;BIM数字孪生|检测信息关联工程构件
-notice: 演示流程：现场采集 → 智慧感知 → 质量检测 → BIM映射。
 
-## equipment
-heading: 智能装备与现场采集
-lead: 移动采集平台搭载三维激光扫描仪、工业相机、LED补光和视频图传，演示隧道现场数据采集。
-image: data/现场.png
-secondary_image: data/小车.png
-start_time: 09:12:08
-end_time: 09:18:42
-progress: 100
-state: 采集完成
-panel_title: 现场视频与设备画面
-metrics: 三维激光扫描|已连接（演示）;工业相机|已连接（演示）;LED补光|已开启（演示）;视频图传|前视 / 后视
-cards: 前视视频|现场前视预览;后视视频|现场后视预览
-notice: 视频中的环境视频窗口用于显示小车前后视角画面；当前使用随包图片模拟视频窗口。
-
-## perception
-heading: 点云与图像智慧感知
-lead: 并列查看点云反射强度着色和语义类别着色，展示隧道工程对象识别与语义分割。
-image: data/BIM1.png
-image: data/点云反射强度预览.png
-secondary_image: data/点云语义类别预览.png
-end_time: 09:20:45
-progress: 100
-state: 感知结果已生成（演示）
-panel_title: 反射强度着色 / 语义类别着色
-metrics: 点云输入|隧道点云01.ply|;语义模型|Point Transformer V3|;类别输出|工程对象语义分割|;演示模式|预设着色视图|
-cards: 左侧视图|反射强度着色;右侧视图|语义类别着色
-notice: 此页以随包图片模拟反射强度与语义分割视图，不对原始点云运行模型推理。
-pointcloud: data/隧道点云01.ply
-
-## inspection
-heading: 隧道施工质量智能检测
-lead: 选择检测任务，查看检测图像、预设参数、病害统计或断面热力图。
-image: data/几何参数测量.png
-start_time: 09:25:00
-end_time: 09:36:32
-progress: 100
-state: 检测结果已生成（演示）
-panel_title: 检测工作区
-subtabs: 槽道几何|geometry;外观病害|defect;平整度分析|flatness
-active_subtab: geometry
-action_labels: 开始检测|下一步|完成
-notice: 页面中的操作用于演示预设工作流，不触发模型推理。
-
-## geometry
-heading: 预埋槽道几何参数检测
-lead: 基于点云断面，查看槽道间距、宽度和横向偏差等参数。
-image: data/几何参数测量.png
-secondary_image: data/几何参数测量2.png
-start_time: 09:25:00
-end_time: 09:25:18
-progress: 100
-state: 检测完成
-panel_title: 几何参数结果
-columns: 槽道编号|间距(mm)|宽度(mm)|左偏差(mm)|右偏差(mm)
-rows: 01|1195|40.19|0.2|0.4;02|1196|40.12|0.1|0.3;03|1194|40.25|0.3|0.5
-metrics: 检测槽道|235|道;间距均值|1,195|mm;槽道宽度|40.19|mm;横向偏差|0.4|mm
-
-## defect
-heading: 衬砌外观病害检测
-lead: 展示裂缝、渗漏等病害定位、面积统计与严重程度评估。
-image: data/外观.png
-secondary_image: data/外观检测.png
-start_time: 09:31:22
-end_time: 09:31:48
-progress: 100
-state: 识别完成
-panel_title: 病害识别与程度评估
-columns: 病害类型|面积(m²)|严重程度
-rows: 裂缝|0.036|中;渗漏|0.287|高
-metrics: 识别病害|2|处;裂缝面积|0.036|m²;渗漏面积|0.287|m²;严重等级|中 / 高|级
-
-## flatness
-heading: 衬砌平整度分析
-lead: 通过热力图与衬砌横断面直观查看偏差分布，并统计超限区段和侵蚀面积。
-image: data/平整度.png
-start_time: 09:36:00
-end_time: 09:36:32
-progress: 100
-state: 分析完成
-panel_title: 热力图 / 衬砌断面 / 区段统计
-columns: 区段|平均偏差(mm)|最大偏差(mm)|超限面积(m²)|侵蚀面积(m²)
-rows: 00|0.136|0.130|0.030|0.077;01|0.130|0.147|0.029|0.068;02|0.128|0.106|0.066|0.049;03|0.115|0.127|0.046|0.050;04|0.104|0.165|0.024|0.032;05|0.099|0.163|0.025|0.054
-metrics: 平整度均值|1.3|mm;检测区段|24|段;超限区段|预设统计|;侵蚀面积|预设统计|m²
-
-## bim
-heading: BIM数字孪生与质量信息映射
-lead: 将现场采集及检测结果关联到本地隧道BIM模型，查看模型与构件映射信息。
-image: data/BIM1.png
-start_time: 09:42:00
-end_time: 09:42:45
-progress: 100
-state: 映射完成（演示）
-panel_title: BIM模型与检测信息
-model: data/隧道BIM.ifc
-pointcloud: data/隧道点云01.ply
-columns: 构件编码|构件类型|关联检测|质量状态
-rows: LIN-001|二衬|平整度|已关联;CH-018|预埋槽道|几何尺寸|已关联;DEF-026|衬砌表面|外观病害|已关联
-metrics: BIM文件|隧道BIM.ifc|;点云文件|隧道点云01.ply|;映射方式|预设关联|;数据状态|本地演示|
-notice: IFC和PLY为随包本地素材。当前映射清单为演示数据，不修改模型文件。
-
-## bim_page
-parent: 数据分析
-title: BIM建模
-close_label: 返回首页
-back_button: 返回首页
-model_card: BIM模型
-pointcloud_card: 点云数据
-cards: 左|—|分析完成;右|—|未分析;右|—|未分析
-record_unit: 项
-preview_title: BIM模型展示
-build_button: BIM建模
-rebuild_button: 重新BIM建模
-export_button: 导出建模
-loading_button: 建模中…
-initial_hint: 点击 BIM建模 加载隧道模型
-loading_hint: 正在读取 IFC 并建立交互模型…
-tree_title: BIM构件元素树
-tree_hint: 建模后显示构件
-select_hint: 请选择模型构件查看参数
-element_unit: 个构件
-viewer_model: data/隧道BIM.glb
-viewer_entities: data/隧道BIM.elements.json
-camera_position: 1.0,-0.25,0.27
-camera_target: 0.28,0,0
-preview_note: 本地模型预览
-detail_label: 详情
-file_label: 模型文件
-info_title: 模型与关联信息
-mapping_count_label: 关联构件
-mapping_status_label: 映射状态
-mapping_title: 构件关联
 
 ## home
 name: 百隧智云
@@ -286,7 +110,6 @@ analyzed_count: 0
 pending_count: 36
 no_data_count: 0
 single_button: 单滑槽分析
-all_button: 一键分析
 status_label: 分析状态
 done_status: 分析完成
 pending_status: 未分析
@@ -308,7 +131,6 @@ empty_value: —
 file_accept: .ply,.xyz,.pts,.txt,.csv
 selected_file_prefix: 已选择文件：
 running_notice: ，正在进行本地预设分析…
-all_running_notice: 正在执行一键分析…
 done_notice: 分析完成，测量结果已更新。
 analysis_delay_ms: 1800
 preview_title: 滑槽
@@ -361,21 +183,6 @@ cloud_file_label: 点云文件
 work_area_label: 工作区
 source_label: 数据来源
 source_value: 本地预设演示结果
-## one_click_analysis
-heading: 数据分析
-folder_name: 导出数据
-group_heading:
-summary_label: 总结
-twist_label: 滑槽扭转、变形情况
-loading_button: 分析中
-loading_notice: 正在分析导出数据…
-loading_ms: 3000
-select_notice: 请选择导出数据文件夹
-folder_error: 请选择 data 下的导出数据文件夹
-done_notice: 分析完成，已匹配点云记录：
-error_prefix: 分析失败：
-awaiting_text:
-
 ## image_analysis
 detail_label: 详情
 heading: 数据分析 > 图像分析

@@ -97,12 +97,10 @@
 .detail-measurement-table tbody{height:100%}
 .detail-measurement-table tr{height:16.6667%}
 .detail-measurement-table th,.detail-measurement-table td{height:16.6667%;padding:6px 8px;text-align:center;vertical-align:middle;border:1px solid #c5e6ee;overflow-wrap:anywhere}
-.detail-measurement-table th{width:64%;background:#06bce8;color:#fff;font:600 13px/1.4 "Microsoft YaHei",Arial,sans-serif}
-.detail-measurement-table td{width:36%;background:#fff;color:#304f59;font:600 17px/1.35 Consolas,"Microsoft YaHei",sans-serif}
+.detail-measurement-table th{width:50%;background:#06bce8;color:#fff;font:600 13px/1.4 "Microsoft YaHei",Arial,sans-serif}
+.detail-measurement-table td{width:50%;background:#fff;color:#304f59;font:600 17px/1.35 Consolas,"Microsoft YaHei",sans-serif}
 @media(max-width:700px){.detail-measurement-table th{font-size:13px}.detail-measurement-table td{font-size:15px}.detail-measurement-table th,.detail-measurement-table td{padding:4px}}
 
-.one-click-page .detail-badge{transition:opacity .22s ease,transform .22s ease,background-color .35s ease}
-.one-click-page .detail-badge.changing{opacity:.25;transform:translateY(-3px)}
 
 /* Match the five module buttons on the field collection page. */
 .detail-page:not(.export-page) .detail-toolbar{display:grid;grid-template-columns:clamp(58px,5vw,100px) minmax(0,1fr) auto;align-items:center;gap:10px}

@@ -102,13 +102,32 @@ function mountPointCloud(canvas,cloud,view,geometryValues){
  const state=view||{yaw:1.3,pitch:.15,zoom:1,panX:0,panY:0,geometry:false,colorMode:'plain'},center=cloud.min.map((v,i)=>(v+cloud.max[i])/2),palette=Array.from({length:16},(_,i)=>{const n=Math.round(68+i*11);return `rgb(${n},${n},${Math.min(255,n+5)})`});
  let width=0,height=0,raf=0,observer=null,drag=null,closed=false;
  const project=(x,y,z,cy,sy,cp,sp)=>{const rx=cy*x-sy*y,ry=sy*x+cy*y;return [rx,cp*z-sp*ry]};
- function draw(){raf=0;if(closed)return;const rect=canvas.getBoundingClientRect(),w=Math.max(1,Math.round(rect.width)),h=Math.max(1,Math.round(rect.height)),ratio=Math.min(2,window.devicePixelRatio||1);if(w!==width||h!==height){width=w;height=h;canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio)}ctx.setTransform(ratio,0,0,ratio,0,0);const background=ctx.createLinearGradient(0,0,0,h);background.addColorStop(0,'#0c5277');background.addColorStop(1,'#020609');ctx.fillStyle=background;ctx.fillRect(0,0,w,h);
+ function draw(){
+  raf=0;if(closed)return;
+  const rect=canvas.getBoundingClientRect(),w=Math.max(1,Math.round(rect.width)),h=Math.max(1,Math.round(rect.height)),ratio=Math.min(2,window.devicePixelRatio||1);
+  if(w!==width||h!==height){width=w;height=h;canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio)}
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  const background=ctx.createLinearGradient(0,0,0,h);background.addColorStop(0,'#0c5277');background.addColorStop(1,'#020609');ctx.fillStyle=background;ctx.fillRect(0,0,w,h);
   const cy=Math.cos(state.yaw),sy=Math.sin(state.yaw),cp=Math.cos(state.pitch),sp=Math.sin(state.pitch),points=cloud.positions,intensities=cloud.strengths;
   let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
   for(let i=0;i<points.length;i+=3){const [px,py]=project(points[i]-center[0],points[i+1]-center[1],points[i+2]-center[2],cy,sy,cp,sp);minX=Math.min(minX,px);maxX=Math.max(maxX,px);minY=Math.min(minY,py);maxY=Math.max(maxY,py)}
-  const base=Math.min(w*.82/Math.max(1,maxX-minX),h*.82/Math.max(1,maxY-minY)),scale=base*state.zoom;
-  for(let i=0;i<points.length;i+=3){const [px,py]=project(points[i]-center[0],points[i+1]-center[1],points[i+2]-center[2],cy,sy,cp,sp),sx=w/2+(px-(minX+maxX)/2)*scale+state.panX,sy2=h/2-(py-(minY+maxY)/2)*scale+state.panY;if(sx<-2||sy2<-2||sx>w+2||sy2>h+2)continue;ctx.fillStyle=state.colorMode==='constant'?`hsl(${Math.round(240-(cloud.constants?.[i/3]??128)*240/255)},100%,55%)`:state.colorMode==='strength'?`hsl(${Math.round(240-intensities[i/3]*240/255)},100%,55%)`:'#c8cdd0';ctx.fillRect(sx,sy2,Math.max(1,ratio),Math.max(1,ratio))}
-  if(state.geometry){ctx.save();ctx.lineWidth=2;ctx.font='bold 15px Arial';const marks=[[.55,.30,'#5ce483',geometryValues[0]],[.47,.48,'#f46464',geometryValues[1]],[.40,.65,'#68aaff',geometryValues[2]]];for(const [x,y,color,label] of marks){ctx.strokeStyle=color;ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(w*x-42,h*y+16);ctx.lineTo(w*x+42,h*y+16);ctx.stroke();ctx.fillText(String(label||''),w*x-20,h*y)}ctx.restore()}
+  const base=Math.min(w*.82/Math.max(1,maxX-minX),h*.82/Math.max(1,maxY-minY)),scale=base*state.zoom,projectedCenterX=(minX+maxX)/2,projectedCenterY=(minY+maxY)/2;
+  const toScreen=(x,y,z)=>{const [px,py]=project(x-center[0],y-center[1],z-center[2],cy,sy,cp,sp);return [w/2+(px-projectedCenterX)*scale+state.panX,h/2-(py-projectedCenterY)*scale+state.panY]};
+  for(let i=0;i<points.length;i+=3){const [sx,sy2]=toScreen(points[i],points[i+1],points[i+2]);if(sx<-2||sy2<-2||sx>w+2||sy2>h+2)continue;ctx.fillStyle=state.colorMode==='constant'?`hsl(${Math.round(240-(cloud.constants?.[i/3]??128)*240/255)},100%,55%)`:state.colorMode==='strength'?`hsl(${Math.round(240-intensities[i/3]*240/255)},100%,55%)`:'#c8cdd0';ctx.fillRect(sx,sy2,Math.max(1,ratio),Math.max(1,ratio))}
+  if(state.geometry){
+   const [minCloudX,minCloudY,minCloudZ]=cloud.min,[maxCloudX,maxCloudY,maxCloudZ]=cloud.max;
+   const marks=[
+    {from:[minCloudX,minCloudY,minCloudZ],to:[maxCloudX,minCloudY,minCloudZ],color:'#5ce483',label:geometryValues?.[0]},
+    {from:[maxCloudX,minCloudY,minCloudZ],to:[maxCloudX,maxCloudY,minCloudZ],color:'#f46464',label:geometryValues?.[1]},
+    {from:[maxCloudX,maxCloudY,minCloudZ],to:[maxCloudX,maxCloudY,maxCloudZ],color:'#68aaff',label:geometryValues?.[2]}
+   ];
+   ctx.save();ctx.font='bold 15px Arial';ctx.textBaseline='bottom';
+   for(const mark of marks){
+    const [x1,y1]=toScreen(...mark.from),[x2,y2]=toScreen(...mark.to),mx=(x1+x2)/2,my=(y1+y2)/2;
+    const label=String(mark.label??'');if(label){const textWidth=ctx.measureText(label).width,pad=4;ctx.fillStyle='rgba(2,12,18,.82)';ctx.fillRect(mx-textWidth/2-pad,my-22,textWidth+pad*2,20);ctx.fillStyle=mark.color;ctx.fillText(label,mx-textWidth/2,my-5)}
+   }
+   ctx.restore();
+  }
  }
  const schedule=()=>{if(!raf)raf=requestAnimationFrame(draw)};
  const onDown=e=>{if(e.button!==0&&e.button!==2)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);drag={x:e.clientX,y:e.clientY,mode:e.button===2||e.shiftKey?'pan':'rotate'}};
